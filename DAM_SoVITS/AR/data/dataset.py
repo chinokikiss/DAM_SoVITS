@@ -39,9 +39,9 @@ class Text2SemanticDataset(Dataset):
     ) -> None:
         super().__init__()
 
-        data = np.load(data_path, allow_pickle=True)
+        data_file = np.load(data_path, allow_pickle=True)
+        self.data_duration, self.data = data_file
         self.speaker_idx = None
-        self.data = data
 
         self.hz = int(os.environ.get("hz", "25hz")[:-2])
 
@@ -106,7 +106,8 @@ class Text2SemanticDataset(Dataset):
         self.data = data
 
         print()
-        print("数据长度:", self.__len__())
+        print("数据量:", self.__len__())
+        print(f"数据总时长: {int(self.data_duration/3600)}h or {int(self.data_duration/60)}m")
         print("说话人数量:", len(self.speaker_idx))
         print()
 
@@ -184,6 +185,7 @@ if __name__ == "__main__":
         collate_fn=dataset.collate,
         shuffle=False,
     )
+    
     for i, batch in enumerate(dataloader):
         if i % 100 == 0:
             print(batch)
