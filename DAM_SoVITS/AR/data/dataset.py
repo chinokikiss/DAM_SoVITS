@@ -39,8 +39,8 @@ class Text2SemanticDataset(Dataset):
     ) -> None:
         super().__init__()
 
-        data_file = np.load(data_path, allow_pickle=True)
-        self.data_duration, self.data = data_file
+        data_file = np.load(data_path, allow_pickle=True).item()
+        self.data_duration, self.data = data_file["data_duration"], data_file["datas"]
         self.speaker_idx = None
 
         self.hz = int(os.environ.get("hz", "25hz")[:-2])
