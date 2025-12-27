@@ -5,7 +5,7 @@ import argparse
 import logging
 import platform
 from pathlib import Path
-
+import sys
 import time
 import shutil
 import torch
@@ -60,6 +60,7 @@ class TrainingPlotCallback(Callback):
     def __init__(self, output_dir):
         super().__init__()
         self.output_dir = Path(output_dir)
+        self.train_timer = time.time()
         self.metrics = {
             'train_loss': [],
             'train_acc': [],
@@ -67,6 +68,9 @@ class TrainingPlotCallback(Callback):
         }
     
     def on_train_epoch_end(self, trainer, pl_module):
+        if (time.time()-self.train_timer)/3600 > 29:
+            sys.exit()
+
         self.metrics['epochs'].append(trainer.current_epoch)
         for key in trainer.logged_metrics:
             if key not in self.metrics:
