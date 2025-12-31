@@ -67,10 +67,11 @@ class TrainingPlotCallback(Callback):
             'epochs': []
         }
     
-    def on_train_epoch_end(self, trainer, pl_module):
+    def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
         if (time.time()-self.train_timer)/3600 > 11:
             sys.exit()
-
+    
+    def on_train_epoch_end(self, trainer, pl_module):
         self.metrics['epochs'].append(trainer.current_epoch)
         for key in trainer.logged_metrics:
             if key not in self.metrics:
