@@ -68,7 +68,7 @@ class TrainingPlotCallback(Callback):
         }
     
     def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
-        if (time.time()-self.train_timer)/3600 > 11:
+        if (time.time()-self.train_timer)/3600 > 0.05:
             sys.exit()
     
     def on_train_epoch_end(self, trainer, pl_module):
